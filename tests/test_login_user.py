@@ -9,10 +9,9 @@ from tests_data import User, HTTP_STATUS_UNAUTHORIZED, HTTP_STATUS_OK
 class TestLoginUser:
 
     @allure.title("Тест логин под существующим пользователем")
-    def test_success_login(self):
+    def test_success_login(self, base_random_user):
         # Создание пользователя
-        payload = User.new_user_payload_registration()
-        UserPage.create_user(payload)
+        payload = base_random_user[1]
         # Авторизация пользователя
         response = UserPage.login_user(payload)
         json = response.json()
@@ -21,8 +20,6 @@ class TestLoginUser:
         assert json["accessToken"]
         assert json["refreshToken"]
         assert json["user"]["email"] is not None and json["user"]["name"]
-        token = json["accessToken"]
-        UserPage.delete_user(token)
 
     @allure.title("Тест логин с неверным логином и паролем")
     def test_unsuccessful_login(self):

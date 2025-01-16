@@ -12,9 +12,9 @@ class TestUpdateDataUser:
 
     @pytest.mark.parametrize('changed_fields', ['email', 'name'])
     @allure.title("Изменение {changed_fields} авторизованного пользователя")
-    def test_update_data_user_auth(self, changed_fields):
+    def test_update_data_user_auth(self, changed_fields, base_random_user):
         # Создание пользователя
-        registration_response = UserPage.create_user(User.new_user_payload_registration())
+        registration_response = base_random_user[0]
         # Получение токена авторизации
         token = registration_response.json()["accessToken"]
         # Данные для обновления
@@ -24,12 +24,11 @@ class TestUpdateDataUser:
         assert response.status_code == HTTP_STATUS_OK
         assert json["success"] is True
         assert json["user"][changed_fields] == payload[changed_fields]
-        UserPage.delete_user(token)
 
     @allure.title("Изменение password авторизованного пользователя")
-    def test_update_password_user_auth(self):
+    def test_update_password_user_auth(self, base_random_user):
         # Создание пользователя
-        registration_response = UserPage.create_user(User.new_user_payload_registration())
+        registration_response = base_random_user[0]
         # Получение токена авторизации
         token = registration_response.json()["accessToken"]
         # Данные для обновления
@@ -38,7 +37,6 @@ class TestUpdateDataUser:
         json = response.json()
         assert response.status_code == HTTP_STATUS_OK
         assert json["success"] is True
-        UserPage.delete_user(token)
 
     @pytest.mark.parametrize('changed_fields', ['email', 'name'])
     @allure.title("Изменение {changed_fields} не авторизованного пользователя")

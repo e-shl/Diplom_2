@@ -8,7 +8,7 @@ class UserPage:
 
     @staticmethod
     @allure.step("Создание пользователя")
-    def create_user(email_password_name):
+    def create_new_user(email_password_name):
         # отправляем запрос на регистрацию пользователя и сохраняем ответ в переменную response
         response = requests.post(CREATE_USER_URL, data=email_password_name, timeout=20)
         return response

@@ -10,11 +10,11 @@ from tests_data import HTTP_STATUS_OK, HTTP_STATUS_BAD, HTTP_STATUS_ERROR
 class TestCreateOrder:
 
     @allure.title("Создание заказа под зарегистрированным пользователем")
-    def test_create_order_auth(self):
+    def test_create_order_auth(self, base_random_user):
         order_id = OrderPage.get_ingredients().json()["data"][0]["_id"]
         payload = {"ingredients": [order_id]}
         # Создание заказа под зарегистрированным пользователем
-        response_create_order = OrderPage.create_order_auth(payload)[0]
+        response_create_order = OrderPage.create_order_auth(base_random_user[0],payload)[0]
         json = response_create_order.json()
         assert response_create_order.status_code == HTTP_STATUS_OK
         assert json["success"] is True

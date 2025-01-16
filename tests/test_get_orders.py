@@ -10,10 +10,10 @@ from tests_data import HTTP_STATUS_OK, HTTP_STATUS_UNAUTHORIZED
 class TestGetUserOrder:
 
     @allure.title("Получение номера заказа зарегистрированного пользователя")
-    def test_get_user_order_auth(self):
+    def test_get_user_order_auth(self, base_random_user):
         order_id =  OrderPage.get_ingredients().json()["data"][0]["_id"]
         payload = {"ingredients": [order_id]}
-        response_token_order = OrderPage.create_order_auth(payload)
+        response_token_order = OrderPage.create_order_auth(base_random_user[0], payload)
         response_order_create =  response_token_order[0]
         token = response_token_order[1]
         response_get_order = OrderPage.get_user_orders_auth(token)

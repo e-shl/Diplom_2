@@ -17,9 +17,8 @@ class OrderPage:
 
     @staticmethod
     @allure.step("Создание заказа под зарегистрированным пользователем")
-    def create_order_auth(payload):
-        response = UserPage.create_user(User.new_user_payload_registration())
-        json = response.json()
+    def create_order_auth(user, payload):
+        json = user.json()
         token = json["accessToken"]
         # отправляем запрос на создание заказа под зарегистрированным пользователем и сохраняем ответ в переменную response
         response_create_order = requests.post(CREATE_ORDER_URL, data=payload, headers={"Authorization": token}, timeout=20)
